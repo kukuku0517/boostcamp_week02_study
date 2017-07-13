@@ -8,6 +8,12 @@ import java.util.Date;
 
 
 class CardItem {
+
+    private String image, title, content;
+    private int distance, likes;
+    private boolean isClicked;
+    private Date date;
+
     public CardItem(){
 
     }
@@ -21,10 +27,6 @@ class CardItem {
         this.date = date;
     }
 
-    private String image, title, content;
-    private int distance, likes;
-    private boolean isClicked;
-    private Date date;
 
     public String getImage() {
         return image;

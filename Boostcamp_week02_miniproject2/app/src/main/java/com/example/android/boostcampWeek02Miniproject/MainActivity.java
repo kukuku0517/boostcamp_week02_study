@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Collections.sort(items, new CustomComparator(0));
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-        adapter = new CustomAdapter(items);
+        adapter = new CustomAdapter(this, items);
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);

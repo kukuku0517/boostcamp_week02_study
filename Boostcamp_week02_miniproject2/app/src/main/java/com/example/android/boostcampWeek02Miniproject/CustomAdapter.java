@@ -10,6 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,22 +32,12 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
     private ArrayList<CardItem> item;
     FirebaseDatabase database;
     DatabaseReference myRef;
+Context context;
 
-    public void sort(int sortType) {
-        Collections.sort(item, new CustomComparator(sortType));
-
-        for (int i = 0; i < item.size(); i++) {
-            notifyItemChanged(i);
-        }
-    }
-
-    public void updateItem(ArrayList<CardItem> item) {
+    public CustomAdapter(Context context, ArrayList<CardItem> item) {
+        this.context=context;
         this.item = item;
-        notifyDataSetChanged();
-    }
 
-    public CustomAdapter(ArrayList<CardItem> item) {
-        this.item = item;
     }
 
     @Override
@@ -62,7 +54,19 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
     @Override
     public void onBindViewHolder(CustomViewHolder holder, final int position) {
         holder.title.setText(item.get(position).getTitle());
-        holder.title.setText(String.valueOf(position));
+        Glide.with(context).load(item.get(position).getImage()).into(holder.iv);
+//        Glide.with(context)
+//                .load(item.get(position).getImage())
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(holder.iv);
+//
+//        Glide.with(context)
+//                .load(item.get(position).getImage()).
+//                diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(holder.iv);
+
+
         holder.content.setText(item.get(position).getContent());
         holder.cb.setChecked(item.get(position).getIsClicked());
     }
@@ -97,4 +101,16 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
             });
         }
     }
+
+    public void sort(int sortType) {
+        Collections.sort(item, new CustomComparator(sortType));
+
+       notifyDataSetChanged();
+    }
+
+    public void updateItem(ArrayList<CardItem> item) {
+        this.item = item;
+        notifyDataSetChanged();
+    }
+
 }
