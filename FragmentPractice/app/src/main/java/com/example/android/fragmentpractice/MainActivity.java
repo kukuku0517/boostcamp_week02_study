@@ -1,5 +1,6 @@
 package com.example.android.fragmentpractice;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,14 +15,20 @@ private TextView tv;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        Fragment f1 = new FirstFragment();
-        Fragment f2 = new SecondFragment();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        Fragment f1 = new FirstFragment();
+//        Fragment f2 = new SecondFragment();
 //        ft.add(R.id.firstContainer,f1);
 //        ft.add(R.id.secondContainer,f2);
 //        ft.commit();
 //        tv= (TextView) findViewById(R.id.textView);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingFragment() ,null)
+                .commit();
+
+
     }
 
     @Override

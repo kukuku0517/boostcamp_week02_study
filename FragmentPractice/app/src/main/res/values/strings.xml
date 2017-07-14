@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_sync">d</string>
+    <string name="pref_sync_summ">asfad</string>
+    <string name="pref_syncConnectionType">asfdadsfasd</string>
+    <string name="pref_syncConnectionTypes_default">asdfadf</string>
 </resources>
