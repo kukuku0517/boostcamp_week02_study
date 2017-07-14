@@ -38,30 +38,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.rv) RecyclerView rv;
     @BindView(R.id.progressBar2) ProgressBar pb;
 
-    RecyclerView.LayoutManager layoutManager;
-    CustomAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private CustomAdapter adapter;
     private int layoutType = 0;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
-    ArrayList<CardItem> items = new ArrayList<>();
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private ArrayList<CardItem> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
         ButterKnife.bind(this);
+
         initView();
         initRecyclerView(items);
         firebaseDataUpdate();
     }
 
+    //navigationView생성
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        //activity, drawerLayout,Toolbar,string ,string
-        //drawer와 toolbar를 연결시켜주는 객체.
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -72,16 +72,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    //recyclerview생성(data X)
     private void initRecyclerView(ArrayList<CardItem> items) {
         Collections.sort(items, new CustomComparator(0));
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
         adapter = new CustomAdapter(this, items);
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);
 
+        //tablayout. 클릭시 tab에 따라 adapter를 통해 item들을 다시 sorting해준다
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -99,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
     }
 
+    //firebase database에서 data불러오기. 불러오기가 완료되면 adapter를 통해 item을 갱신해준다.
     void firebaseDataUpdate() {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("cv_items");
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(DataSnapshot dataSnapshot) {
                 pb.setVisibility(View.GONE);
                 items.clear();
-
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     CardItem c = s.getValue(CardItem.class);
                     items.add(c);
@@ -121,12 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
     }
 
+    //layout변경 버튼. 누르면 layoutManager를 통해서 layout을 변경해준다
     @OnClick(R.id.layout_button)
     public void click(ImageView v) {
         switch (layoutType) {
@@ -150,12 +149,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    //메뉴 생성
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    //메뉴 클릭
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -165,10 +166,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    //네비게이션 클릭
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-
         }
         return false;
     }

@@ -26,18 +26,16 @@ import butterknife.ButterKnife;
  */
 
 
-
 class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
     private ArrayList<CardItem> item;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
-Context context;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private Context context;
 
     public CustomAdapter(Context context, ArrayList<CardItem> item) {
-        this.context=context;
+        this.context = context;
         this.item = item;
-
     }
 
     @Override
@@ -46,27 +44,16 @@ Context context;
         int layoutIdForListItem = R.layout.card_item_view;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);//3번째 param은 뭐지?
+        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
 
         return new CustomViewHolder(view);
     }
 
+    //Glide를 사용해서 image불러오기
     @Override
     public void onBindViewHolder(CustomViewHolder holder, final int position) {
         holder.title.setText(item.get(position).getTitle());
         Glide.with(context).load(item.get(position).getImage()).into(holder.iv);
-//        Glide.with(context)
-//                .load(item.get(position).getImage())
-//                .skipMemoryCache(true)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(holder.iv);
-//
-//        Glide.with(context)
-//                .load(item.get(position).getImage()).
-//                diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(holder.iv);
-
-
         holder.content.setText(item.get(position).getContent());
         holder.cb.setChecked(item.get(position).getIsClicked());
     }
@@ -76,20 +63,18 @@ Context context;
         return item.size();
     }
 
+
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.cv_imageView)
-        ImageView iv;
-        @BindView(R.id.cv_title)
-        TextView title;
-        @BindView(R.id.cv_content)
-        TextView content;
-        @BindView(R.id.cv_checkBox)
-        CheckBox cb;
+        @BindView(R.id.cv_imageView)        ImageView iv;
+        @BindView(R.id.cv_title)        TextView title;
+        @BindView(R.id.cv_content)        TextView content;
+        @BindView(R.id.cv_checkBox)        CheckBox cb;
 
         public CustomViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            //checkbox 클릭시 firebase data 갱신
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -102,15 +87,15 @@ Context context;
         }
     }
 
+    //tablayout 클릭시 호출되는 sorting함수
     public void sort(int sortType) {
         Collections.sort(item, new CustomComparator(sortType));
-
-       notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
+    //fireabase 갱신시 호출되는 함수
     public void updateItem(ArrayList<CardItem> item) {
         this.item = item;
         notifyDataSetChanged();
     }
-
 }

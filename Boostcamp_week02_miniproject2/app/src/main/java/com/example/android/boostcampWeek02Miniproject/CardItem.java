@@ -14,6 +14,7 @@ class CardItem {
     private boolean isClicked;
     private Date date;
 
+    //TODO 1: firebase사용할때 필요함. 왜인지는 잘..
     public CardItem(){
 
     }
