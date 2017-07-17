@@ -18,6 +18,7 @@ class CardItem {
     public CardItem(){
 
     }
+
     public CardItem(String image, String title, String content, boolean isClicked, int distance, int likes, Date date) {
         this.image = image;
         this.title = title;

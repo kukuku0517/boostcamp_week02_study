@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initRecyclerView(ArrayList<CardItem> items) {
         Collections.sort(items, new CustomComparator(0));
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        adapter = new CustomAdapter(this, items);
+        adapter = new CustomAdapter(this);
+        adapter.updateItem(items);
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(layoutManager);

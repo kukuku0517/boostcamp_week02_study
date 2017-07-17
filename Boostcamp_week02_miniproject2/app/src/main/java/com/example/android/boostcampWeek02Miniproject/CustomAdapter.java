@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by samsung on 2017-07-11.
@@ -33,9 +34,8 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
     private DatabaseReference myRef;
     private Context context;
 
-    public CustomAdapter(Context context, ArrayList<CardItem> item) {
+    public CustomAdapter(Context context) {
         this.context = context;
-        this.item = item;
     }
 
     @Override
@@ -51,7 +51,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
 
     //Glide를 사용해서 image불러오기
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, final int position) {
+    public void onBindViewHolder(CustomViewHolder holder, int position) {
         holder.title.setText(item.get(position).getTitle());
         Glide.with(context).load(item.get(position).getImage()).into(holder.iv);
         holder.content.setText(item.get(position).getContent());
@@ -73,8 +73,8 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
 
         public CustomViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
-            //checkbox 클릭시 firebase data 갱신
+            ButterKnife.bind(this, view); //없애고 돌려보기
+            // checkbox 클릭시 firebase data 갱신
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,7 +90,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder>
     //tablayout 클릭시 호출되는 sorting함수
     public void sort(int sortType) {
         Collections.sort(item, new CustomComparator(sortType));
-        notifyDataSetChanged();
+       notifyDataSetChanged();
     }
 
     //fireabase 갱신시 호출되는 함수

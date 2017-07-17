@@ -17,7 +17,7 @@ class CustomComparator implements Comparator<CardItem> {
     }
 
     @Override
-    public int compare(CardItem o1, CardItem o2) {
+    public int compare(CardItem o1, CardItem o2) { //내림차순 오름차순!!
         long obj1 = 0;
         long obj2 = 0;
         switch (sortType) {
@@ -26,18 +26,15 @@ class CustomComparator implements Comparator<CardItem> {
                 obj2 = o2.getDistance();
                 break;
             case 1: //인기
-                obj1 = o1.getLikes();
-                obj2 = o2.getLikes();
+                obj1 = o2.getLikes();
+                obj2 = o1.getLikes();
                 break;
             case 2: //시간
                 obj1 = o1.getDate().getTime();
                 obj2 = o2.getDate().getTime();
                 break;
         }
-        if (obj1 > obj2)
-            return 1;
-        else if (obj1 < obj2)
-            return -1;
-        return 0;
+
+        return (int) (obj1-obj2);
     }
 }
